@@ -1,5 +1,27 @@
 extends layout
 
+block blogNavbar
+  nav.navbar.navbar-inverse
+    div.container-fluid
+      div.navbar-header
+        a.navbar-brand(href='#') Blog
+      ul.nav.navbar-nav
+        li.active
+          a(href='#') Home
+        li
+          a(href='#') first
+        li
+          a(href='#') second
+        li
+          a(href='#') third
+  
+block blogHeader
+  div.container
+    div.jumbotron
+      h1= title
+      p Welcome to #{title}
+
 block content
-  h1= title
-  p Welcome to #{title}
+  div.container
+    p Blog contents.
+
