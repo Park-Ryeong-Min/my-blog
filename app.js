@@ -19,9 +19,10 @@ app.set('view engine', 'jade');
 app.use(logger('dev'));
 // add custom logger
 app.use(function(req, res, next){
-  console.log('Request host IP : ' + req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  console.log('Request host IP : ' + req.headers['x-forwarded-for'] || req.connection.remoteAddress);
   next();
 });
+app.use(require('./logger/getRequestInfo'));
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
