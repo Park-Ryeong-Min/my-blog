@@ -5,8 +5,10 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
+// route modules
 var index = require('./routes/index');
 var users = require('./routes/users');
+var board = require('./routes/board');
 
 var app = express();
 
@@ -32,6 +34,7 @@ app.use('/bootstrap', express.static(__dirname + '/node_modules/bootstrap/dist/c
 
 app.use('/', index);
 app.use('/users', users);
+app.use('/board', board);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -39,6 +42,7 @@ app.use(function(req, res, next) {
   err.status = 404;
   next(err);
 });
+
 
 // error handler
 app.use(function(err, req, res, next) {

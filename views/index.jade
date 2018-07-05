@@ -4,16 +4,14 @@ block blogNavbar
   nav.navbar.navbar-inverse
     div.container-fluid
       div.navbar-header
-        a.navbar-brand(href='#') Blog
+        a.navbar-brand(href='http://localhost:47777') Blog
       ul.nav.navbar-nav
-        li.active
-          a(href='#') Home
         li
-          a(href='#') first
+          a(href='http://localhost:47777/board/list') board
         li
           a(href='#') second
         li
-          a(href='#') third
+          a(href='#') contact
   
 block blogHeader
   div.container
@@ -22,6 +20,6 @@ block blogHeader
       p Welcome to #{title}
 
 block content
-  div.container
+  div.container.base-content
     p Blog contents.
 
