@@ -1,22 +1,23 @@
 extends layout
 
-block blogNavbar
-    nav.navbar.navbar-inverse
-        div.container-fluid
-            div.navbar-header
-                a.navbar-brand(href='http://localhost:47777') Blog
-            ul.nav.navbar-nav
-                li
-                    a(href='http://localhost:47777/board/list') board
-                li
-                    a(href='#') second
-                li
-                    a(href='#') contact
-
 block blogHeader
     div.container
         h2 Board list.
 
 block content
     div.container.base-content
-        h3 content
+        p Board
+        table#board-table.table
+            thead
+                tr
+                    th index
+                    th title
+                    th date
+            tbody
+                each item in result
+                    tr(onclick='listItemClick()')
+                        td= item.index
+                        td
+                            a(href='http://localhost:47777/board/item/' + item.index)= item.title
+                        td= item.date
+                    

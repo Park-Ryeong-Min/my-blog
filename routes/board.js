@@ -8,22 +8,28 @@ router.get('/list', function(req, res){
         if(err){
             throw err;
         }
-        res.render('board', { title: 'Ved\'s Blog.'});
+        res.render('board', { title: 'Ved\'s Blog.', result : result});
     });
 });
 
 router.get('/item/:index', function(req, res){
-    var index = req.param.index;
+    var index = req.params.index;
 
     // console logger
     console.log('/board/item : Request parameters ---' );
     console.log('[index] : ' + index);
     console.log('===================');
+    boardSchem.findOne({index : index}, function(err, result){
+        if(err){
+            throw err;
+        }
+        res.render('boardItem', {title: 'Ved\'s Blog.', boardItem : result});
+    });
 });
 
 router.get('/delete/:index/:password', function(req, res){
-    var index = req.param.index;
-    var password = req.param.password;
+    var index = req.params.index;
+    var password = req.params.password;
 
     // console logger
     console.log('/board/delete : Request parameters ---');
@@ -45,22 +51,28 @@ router.post('/create', function(req, res){
     console.log('[password] : ' + password);
     console.log('===================');
 
-    var index = new Date().getTime();
+    var date = new Date();
 
-    var newBoard = new boardSchem();
-    newBoard.title = title;
-    newBoard.content = content;
-    newBoard.password = password;
-    newBoard.index = index;
-    newBoard.save(function(err, result){
+    boardSchem.find({}, function(err, result){
         if(err){
             throw err;
         }
-        console.log('/board/create : Save new document in Database ---');
-        console.log('Save success.');
-        console.log('===================');
-        res.status(200);
-        res.end();
+        var newBoard = new boardSchem();
+        newBoard.title = title;
+        newBoard.content = content;
+        newBoard.password = password;
+        newBoard.index = result.length + 1;
+        newBoard.date = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
+        newBoard.save(function(err, result){
+            if(err){
+                throw err;
+            }
+            console.log('/board/create : Save new document in Database ---');
+            console.log('Save success.');
+            console.log('===================');
+            res.status(200);
+            res.end();
+        });
     });
 });
 

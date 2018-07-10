@@ -4,7 +4,7 @@ var schema = new mongoose.Schema({
     title : String,
     content : String,
     count : { type : Number, default : 0 },
-    date : { type : Date, default : Date.now },
+    date : { type : String, default : '2018-07-10'},
     index : Number,
     password : String                               // for delete
 });

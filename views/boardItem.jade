@@ -1,0 +1,14 @@
+extends boardItemLayout
+
+block blogHeader
+    div.container
+        h2 Board Content.
+
+block content
+    div.container
+        div
+            p title : #{boardItem.title}
+        div
+            p date : #{boardItem.date}
+        div
+            p= boardItem.content
