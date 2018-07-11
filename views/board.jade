@@ -13,6 +13,7 @@ block content
                     th index
                     th title
                     th date
+                    th category
             tbody
                 each item in result
                     tr(onclick='listItemClick()')
@@ -20,4 +21,5 @@ block content
                         td
                             a(href='http://localhost:47777/board/item/' + item.index)= item.title
                         td= item.date
+                        td= item.categoryStr
                     

@@ -1,14 +1,38 @@
 var express = require('express');
 var router = express.Router();
+var showdown = require('showdown');
+var showdownHighlight = require('showdown-highlight');
+var converter = new showdown.Converter({
+    extensions: [showdownHighlight],
+    ghCodeBlocks: true
+});
 
 var boardSchem = require('../db/models/board');
+
+function categorizer(result, obj){
+    if(result.category == 0){
+        obj.categoryStr = 'Algorithm';
+    }else{
+        obj.categoryStr = 'etc.';
+    }
+}
 
 router.get('/list', function(req, res){
     boardSchem.find({},{_id : false, __v : false}, function(err, result){
         if(err){
             throw err;
         }
-        res.render('board', { title: 'Ved\'s Blog.', result : result});
+        var arr = [];
+        for(var i = 0; i < result.length; i++){
+            var obj = {};
+            categorizer(result[i], obj);
+            obj.title = result[i].title;
+            obj.date = result[i].date;
+            obj.index = result[i].index;
+            console.log(obj);
+            arr.push(obj);
+        }
+        res.render('board', { title: 'Ved\'s Blog.', result : arr});
     });
 });
 
@@ -23,7 +47,15 @@ router.get('/item/:index', function(req, res){
         if(err){
             throw err;
         }
-        res.render('boardItem', {title: 'Ved\'s Blog.', boardItem : result});
+        var obj = new Object();
+        var mdText = result.content;
+        obj.content = converter.makeHtml(mdText);
+        obj.index = result.index;
+        obj.date = result.date;
+        obj.title = result.title;
+        categorizer(result, obj);
+        console.log(obj);
+        res.render('boardItem', {title: 'Ved\'s Blog.', boardItem : obj});
     });
 });
 
@@ -43,6 +75,7 @@ router.post('/create', function(req, res){
     var title = req.body.title;
     var content = req.body.content;
     var password = req.body.password;
+    var category = req.body.category;
 
     // console logger
     console.log('/board/create : Request parameters ---');
@@ -62,6 +95,7 @@ router.post('/create', function(req, res){
         newBoard.content = content;
         newBoard.password = password;
         newBoard.index = result.length + 1;
+        newBoard.category = category;
         newBoard.date = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
         newBoard.save(function(err, result){
             if(err){
